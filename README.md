@@ -6,7 +6,7 @@ This distinction is made so as to enhance composability. It is particularly usef
 and will like your components arranged in a certain way, or if your layout needs to look just as nice 
 in a landscape orientation.
 
-![Demo](app/screenshots/pinpad_simple.png "Screenshot of Sample Project")
+<img src="./app/screenshots/pinpad_simple.png" title="Screenshot of Sample Project" width="300px" />
 
 
 ## Usage
