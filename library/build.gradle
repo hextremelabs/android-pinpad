@@ -34,3 +34,35 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }
+
+ext {
+    pomVersion = versions.versionName
+    pomGroupId = 'com.hextremelabs.pinpad'
+    pomArtifactId = 'pinpad'
+    pomArtifactName = 'Android Pinpad'
+    pomArtifactDescription = pomArtifactName
+    // pomArtifactId, pomArtifactName, pomArtifactDescription
+
+    pomSiteUrl = 'https://github.com/hextremelabs/android-pinpad'
+    pomGitUrl = 'https://github.com/hextremelabs/android-pinpad.git'
+
+    pomLicenses = {
+        license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+        }
+    }
+
+    pomDevelopers = {
+        developer {
+            id 'kingsleyadio'
+            name 'Kingsley Adio'
+            email 'kingsley@hextremelabs.com'
+            organization 'Hextremelabs Ltd'
+            organizationUrl 'http://www.hextremelabs.com'
+            // organization, organizationUrl
+        }
+    }
+}
+
+apply from: '../publishing.gradle'
