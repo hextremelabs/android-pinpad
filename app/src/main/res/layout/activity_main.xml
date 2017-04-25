@@ -1,8 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context="com.hextremelabs.pinpad.demo.MainActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/enter_pin" />
+
+    <com.hextremelabs.pinpad.PinTextView
+        android:id="@+id/pinview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray"
+        android:padding="16dp" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.hextremelabs.pinpad.PinpadView
+        android:id="@+id/pinpad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:fontSource="@string/font_default"
+        app:keyBackground="?selectableItemBackgroundBorderless"
+        app:keySpacing="8dp"
+        app:numDigits="5"
+        app:subTextColor="@color/secondary_text"
+        app:subTextSize="12sp"
+        app:textColor="@color/primary_text"
+        app:textSize="28sp" />
+
+</LinearLayout>

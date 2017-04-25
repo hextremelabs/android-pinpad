@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Android Pinpad</string>
+    <string name="enter_pin">Enter your 5-digit PIN</string>
+    <string name="font_default">fonts/OpenSans-Regular-webfont.ttf</string>
 </resources>
