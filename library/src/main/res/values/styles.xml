@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PinpadView">
+        <item name="textSize">24sp</item>
+        <item name="subTextSize">10sp</item>
+        <item name="keySpacing">16dp</item>
+        <item name="textColor">@color/primary_text</item>
+        <item name="subTextColor">@color/secondary_text</item>
+        <item name="fontSource">@string/font_default</item>
+        <item name="keyBackground">?attr/selectableItemBackgroundBorderless</item>
+        <item name="numDigits">4</item>
+    </style>
+
+</resources>

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Pinpad</string>
+    <string name="font_default" />
 </resources>

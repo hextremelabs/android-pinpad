@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PinpadView">
+        <attr name="textSize" format="dimension" />
+        <attr name="subTextSize" format="dimension" />
+        <attr name="textColor" format="color" />
+        <attr name="subTextColor" format="color" />
+        <attr name="keySpacing" format="dimension" />
+        <attr name="fontSource" format="string" />
+        <attr name="keyBackground" format="reference" />
+        <attr name="numDigits" format="integer" />
+    </declare-styleable>
+</resources>
