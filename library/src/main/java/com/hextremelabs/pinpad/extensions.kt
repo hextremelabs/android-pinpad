@@ -9,7 +9,7 @@ import android.graphics.Paint
  */
 
 
-val Paint.textHeight get() = descent() - ascent()
+internal val Paint.textHeight get() = descent() - ascent()
 
 internal inline fun <reified T> Context.systemService(serviceName: String): T {
     return getSystemService(serviceName) as T
