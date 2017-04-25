@@ -24,7 +24,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile libraries.supportAppcompat
     compile libraries.kotlinStdLib
+    compile libraries.calligraphy
 
     testCompile 'junit:junit:4.12'
 

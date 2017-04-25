@@ -19,7 +19,8 @@ buildscript {
             supportAnnotations: "com.android.support:support-annotations:${versions.supportLibVersion}",
             supportAppcompat  : "com.android.support:appcompat-v7:${versions.supportLibVersion}",
             supportDesign     : "com.android.support:design:${versions.supportLibVersion}",
-            kotlinStdLib      : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlinVersion}"
+            kotlinStdLib      : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlinVersion}",
+            calligraphy       : "uk.co.chrisjenx:calligraphy:2.1.0"
     ]
 
     repositories {
