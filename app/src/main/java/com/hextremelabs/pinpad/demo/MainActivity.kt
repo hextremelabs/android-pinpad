@@ -8,8 +8,8 @@ import com.hextremelabs.pinpad.PinpadView
 
 class MainActivity : AppCompatActivity(), PinpadView.Callback {
 
-    internal val pinpad by lazy { findViewById(R.id.pinpad) as PinpadView }
-    internal val pinview by lazy { findViewById(R.id.pinview) as PinTextView }
+    private val pinpad by lazy { findViewById<PinpadView>(R.id.pinpad) }
+    private val pinview by lazy { findViewById<PinTextView>(R.id.pinview) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

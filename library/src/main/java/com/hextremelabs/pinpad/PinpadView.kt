@@ -8,6 +8,8 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.os.VibrationEffect
 import android.os.Vibrator
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.AppCompatImageButton
@@ -16,7 +18,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.CycleInterpolator
-import uk.co.chrisjenx.calligraphy.TypefaceUtils
+import kotlin.math.max
 
 
 /**
@@ -26,8 +28,9 @@ import uk.co.chrisjenx.calligraphy.TypefaceUtils
 class PinpadView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null,
-  defStyleAttr: Int = 0,
-  defStyleRes: Int = R.style.PinpadView) : ViewGroup(context, attrs, defStyleAttr, defStyleRes), View.OnClickListener {
+    defStyleAttr: Int = 0
+) : ViewGroup(context, attrs, defStyleAttr),
+    View.OnClickListener {
 
     private var keySpacing: Float
     private var numDigits: Int
@@ -53,7 +56,7 @@ class PinpadView @JvmOverloads constructor(
     )
 
     init {
-        val values = context.obtainStyledAttributes(attrs, R.styleable.PinpadView, defStyleAttr, defStyleRes)
+        val values = context.obtainStyledAttributes(attrs, R.styleable.PinpadView, defStyleAttr, R.style.PinpadView)
         try {
             keySpacing = values.getDimension(R.styleable.PinpadView_keySpacing, 0F)
             numDigits = values.getInt(R.styleable.PinpadView_numDigits, 0)
@@ -75,8 +78,7 @@ class PinpadView @JvmOverloads constructor(
         if (v !is KeyView) return
         v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
 
-        val char = v.key.char
-        when (char) {
+        when (val char = v.key.char) {
             KEY_DEL -> {
                 if (passcode.isNotEmpty()) {
                     passcode = passcode.substring(0, passcode.lastIndex)
@@ -119,14 +121,19 @@ class PinpadView @JvmOverloads constructor(
         }
         shakeAnimator.start()
         val v = context.systemService<Vibrator>(Context.VIBRATOR_SERVICE)
-        v.vibrate(DURATION_ANIMATION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(DURATION_ANIMATION, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            @Suppress("DEPRECATION")
+            v.vibrate(DURATION_ANIMATION)
+        }
     }
 
     private fun childrenSequence(): Sequence<KeyView> {
-        return (0..childCount - 1)
+        return (0 until childCount)
           .asSequence()
           .map { getChildAt(it) }
-          .filterIsInstance(KeyView::class.java)
+            .filterIsInstance<KeyView>()
     }
 
     fun setTypeface(tf: Typeface) {
@@ -216,7 +223,7 @@ class PinpadView @JvmOverloads constructor(
         val childWidth = (width - paddingLeft - paddingRight - (keySpacing * (NUM_COLS + 1))) / NUM_COLS
         val childHeight = (height - paddingTop - paddingBottom - (keySpacing * (NUM_ROWS + 1))) / NUM_ROWS
 
-        for (index in 0..childCount - 1) {
+        for (index in 0 until childCount) {
             val column = index % NUM_COLS
             val row = index / NUM_COLS
             val child = getChildAt(index)
@@ -231,7 +238,11 @@ class PinpadView @JvmOverloads constructor(
     }
 
     @SuppressLint("ViewConstructor")
-    private class KeyView(context: Context, attrs: TypedArray, val key: Key = Key.NULL) : AppCompatImageButton(context) {
+    private class KeyView(
+        context: Context,
+        attrs: TypedArray,
+        val key: Key = Key.NULL
+    ) : AppCompatImageButton(context) {
 
         private val charPaint: Paint
         private val subTextPaint: Paint
@@ -253,7 +264,7 @@ class PinpadView @JvmOverloads constructor(
 
             val fontPath = attrs.getString(R.styleable.PinpadView_fontSource)
             if (fontPath != null && fontPath.isNotBlank()) {
-                setTypeface(TypefaceUtils.load(context.assets, fontPath))
+                setTypeface(Typeface.createFromAsset(context.assets, fontPath))
             }
         }
 
@@ -282,7 +293,7 @@ class PinpadView @JvmOverloads constructor(
             var width = (paddingLeft + paddingRight).toFloat()
             val charSize = charPaint.measureText(key.char.toString())
             val subTextSize = subTextPaint.measureText(key.subText)
-            width += Math.max(charSize, subTextSize)
+            width += max(charSize, subTextSize)
 
             var height = (paddingTop + paddingBottom).toFloat()
             height += charPaint.textHeight
@@ -342,10 +353,10 @@ class PinpadView @JvmOverloads constructor(
     }
 
     companion object {
-        const private val KEY_DEL = '\u232B'
-        const private val KEY_HELP = '\u2753'
-        const private val NUM_COLS = 3
-        const private val NUM_ROWS = 4
-        const private val DURATION_ANIMATION = 300L
+        private const val KEY_DEL = '\u232B'
+        private const val KEY_HELP = '\u2753'
+        private const val NUM_COLS = 3
+        private const val NUM_ROWS = 4
+        private const val DURATION_ANIMATION = 300L
     }
 }
