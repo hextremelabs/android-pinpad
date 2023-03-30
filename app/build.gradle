@@ -12,7 +12,7 @@ android {
         versionCode versions.versionCode
         versionName versions.versionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     compileOptions {
@@ -28,9 +28,9 @@ dependencies {
     implementation libraries.supportAppcompat
     implementation libraries.kotlinStdLib
 
-
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestImplementation('androidx.test.ext:junit:1.1.5')
     testImplementation 'junit:junit:4.12'
 }

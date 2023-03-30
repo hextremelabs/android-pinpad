@@ -2,7 +2,7 @@ package com.hextremelabs.pinpad
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v7.widget.AppCompatTextView
+import androidx.appcompat.widget.AppCompatTextView
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.Gravity
