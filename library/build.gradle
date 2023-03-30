@@ -15,6 +15,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+    namespace 'com.hextremelabs.pinpad'
 }
 
 dependencies {
@@ -43,18 +50,18 @@ ext {
 
     pomLicenses = {
         license {
-            name 'The Apache Software License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            name = 'The Apache Software License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
         }
     }
 
     pomDevelopers = {
         developer {
-            id 'kingsleyadio'
-            name 'Kingsley Adio'
-            email 'kingsley@hextremelabs.com'
-            organization 'Hextremelabs Ltd'
-            organizationUrl 'http://www.hextremelabs.com'
+            id = 'kingsleyadio'
+            name = 'Kingsley Adio'
+            email = 'kingsley@hextremelabs.com'
+            organization = 'Hextremelabs Ltd'
+            organizationUrl = 'http://www.hextremelabs.com'
             // organization, organizationUrl
         }
     }
