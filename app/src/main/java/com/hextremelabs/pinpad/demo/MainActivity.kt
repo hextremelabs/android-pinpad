@@ -1,7 +1,7 @@
 package com.hextremelabs.pinpad.demo
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import com.hextremelabs.pinpad.PinTextView
 import com.hextremelabs.pinpad.PinpadView

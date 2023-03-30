@@ -12,13 +12,14 @@ android {
         versionCode versions.versionCode
         versionName versions.versionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.hextremelabs.pinpad.demo'
 }
 
 dependencies {
@@ -28,9 +29,9 @@ dependencies {
     implementation libraries.supportAppcompat
     implementation libraries.kotlinStdLib
 
-
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestImplementation('androidx.test.ext:junit:1.1.5')
     testImplementation 'junit:junit:4.12'
 }

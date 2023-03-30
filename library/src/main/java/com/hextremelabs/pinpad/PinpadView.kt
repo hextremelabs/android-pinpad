@@ -11,13 +11,15 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.AppCompatImageButton
+import androidx.core.view.ViewCompat
+import androidx.appcompat.widget.AppCompatImageButton
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.CycleInterpolator
+import androidx.core.content.getSystemService
+import androidx.core.view.children
 import kotlin.math.max
 
 
@@ -26,8 +28,8 @@ import kotlin.math.max
  * @since 16 Apr, 2017
  */
 class PinpadView @JvmOverloads constructor(
-  context: Context,
-  attrs: AttributeSet? = null,
+    context: Context,
+    attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr),
     View.OnClickListener {
@@ -41,18 +43,18 @@ class PinpadView @JvmOverloads constructor(
     var callback: Callback? = null
 
     private val keys: List<Key> = listOf(
-      Key('1', ""),
-      Key('2', "ABC"),
-      Key('3', "DEF"),
-      Key('4', "GHI"),
-      Key('5', "JKL"),
-      Key('6', "MNO"),
-      Key('7', "PQRS"),
-      Key('8', "TUV"),
-      Key('9', "WXYZ"),
-      Key(KEY_HELP, ""),
-      Key('0', "+"),
-      Key(KEY_DEL, "")
+        Key('1', ""),
+        Key('2', "ABC"),
+        Key('3', "DEF"),
+        Key('4', "GHI"),
+        Key('5', "JKL"),
+        Key('6', "MNO"),
+        Key('7', "PQRS"),
+        Key('8', "TUV"),
+        Key('9', "WXYZ"),
+        Key(KEY_HELP, ""),
+        Key('0', "+"),
+        Key(KEY_DEL, "")
     )
 
     init {
@@ -85,9 +87,11 @@ class PinpadView @JvmOverloads constructor(
                     viewProvider?.onDeleteChar()
                 }
             }
+
             KEY_HELP -> {
                 callback?.onHelpRequest()
             }
+
             else -> {
                 if (passcode.length < numDigits) {
                     passcode += char
@@ -120,66 +124,56 @@ class PinpadView @JvmOverloads constructor(
             translationX = (animation.animatedValue as Int).toFloat()
         }
         shakeAnimator.start()
-        val v = context.systemService<Vibrator>(Context.VIBRATOR_SERVICE)
+        val v = context.getSystemService<Vibrator>()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(DURATION_ANIMATION, VibrationEffect.DEFAULT_AMPLITUDE))
+            v?.vibrate(VibrationEffect.createOneShot(DURATION_ANIMATION, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
             @Suppress("DEPRECATION")
-            v.vibrate(DURATION_ANIMATION)
+            v?.vibrate(DURATION_ANIMATION)
         }
     }
 
     private fun childrenSequence(): Sequence<KeyView> {
-        return (0 until childCount)
-          .asSequence()
-          .map { getChildAt(it) }
-            .filterIsInstance<KeyView>()
+        return children.filterIsInstance<KeyView>()
     }
 
     fun setTypeface(tf: Typeface) {
-        childrenSequence()
-          .forEach { it.setTypeface(tf) }
+        childrenSequence().forEach { it.setTypeface(tf) }
 
         requestLayout()
         invalidate()
     }
 
     fun setKeyBackgroundDrawable(drawable: Drawable) {
-        childrenSequence()
-          .forEach { ViewCompat.setBackground(it, drawable) }
+        childrenSequence().forEach { ViewCompat.setBackground(it, drawable) }
     }
 
     fun setKeyTextSize(size: Float) {
-        childrenSequence()
-          .forEach { it.setTextSize(size) }
+        childrenSequence().forEach { it.setTextSize(size) }
 
         requestLayout()
         invalidate()
     }
 
     fun setKeySubTextSize(size: Float) {
-        childrenSequence()
-          .forEach { it.setSubTextSize(size) }
+        childrenSequence().forEach { it.setSubTextSize(size) }
 
         requestLayout()
         invalidate()
     }
 
     fun setKeyTextColor(color: Int) {
-        childrenSequence()
-          .forEach { it.setTextColor(color) }
+        childrenSequence().forEach { it.setTextColor(color) }
         invalidate()
     }
 
     fun setKeySubTextColor(color: Int) {
-        childrenSequence()
-          .forEach { it.setSubTextColor(color) }
+        childrenSequence().forEach { it.setSubTextColor(color) }
         invalidate()
     }
 
     fun setSpacing(spacing: Int) {
-        childrenSequence()
-          .forEach { it.setPadding(spacing, spacing, spacing, spacing) }
+        childrenSequence().forEach { it.setPadding(spacing, spacing, spacing, spacing) }
 
         keySpacing = spacing.toFloat()
         requestLayout()
@@ -204,16 +198,16 @@ class PinpadView @JvmOverloads constructor(
 
         val aChildView = getChildAt(1)
         aChildView.measure(
-          MeasureSpec.makeMeasureSpec(calculatedChildWidth.toInt(), MeasureSpec.getMode(widthMeasureSpec)),
-          MeasureSpec.makeMeasureSpec(calculatedChildHeight.toInt(), MeasureSpec.getMode(heightMeasureSpec))
+            MeasureSpec.makeMeasureSpec(calculatedChildWidth.toInt(), MeasureSpec.getMode(widthMeasureSpec)),
+            MeasureSpec.makeMeasureSpec(calculatedChildHeight.toInt(), MeasureSpec.getMode(heightMeasureSpec))
         )
 
         width += (aChildView.measuredWidth * NUM_COLS)
         height += (aChildView.measuredHeight * NUM_ROWS)
 
         setMeasuredDimension(
-          resolveSizeAndState(width.toInt(), widthMeasureSpec, MeasureSpec.getMode(widthMeasureSpec)),
-          resolveSizeAndState(height.toInt(), heightMeasureSpec, MeasureSpec.getMode(heightMeasureSpec))
+            resolveSizeAndState(width.toInt(), widthMeasureSpec, MeasureSpec.getMode(widthMeasureSpec)),
+            resolveSizeAndState(height.toInt(), heightMeasureSpec, MeasureSpec.getMode(heightMeasureSpec))
         )
     }
 
@@ -248,8 +242,7 @@ class PinpadView @JvmOverloads constructor(
         private val subTextPaint: Paint
 
         init {
-            val flags = Paint.ANTI_ALIAS_FLAG or
-              Paint.DITHER_FLAG or Paint.LINEAR_TEXT_FLAG
+            val flags = Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG or Paint.LINEAR_TEXT_FLAG
 
             charPaint = Paint(flags).apply {
                 textAlign = Paint.Align.CENTER
@@ -263,7 +256,7 @@ class PinpadView @JvmOverloads constructor(
             }
 
             val fontPath = attrs.getString(R.styleable.PinpadView_fontSource)
-            if (fontPath != null && fontPath.isNotBlank()) {
+            if (!fontPath.isNullOrBlank()) {
                 setTypeface(Typeface.createFromAsset(context.assets, fontPath))
             }
         }
@@ -302,20 +295,24 @@ class PinpadView @JvmOverloads constructor(
             }
 
             setMeasuredDimension(
-              resolveSizeAndState(width.toInt(), widthMeasureSpec, 0),
-              resolveSizeAndState(height.toInt(), heightMeasureSpec, 0)
+                resolveSizeAndState(width.toInt(), widthMeasureSpec, 0),
+                resolveSizeAndState(height.toInt(), heightMeasureSpec, 0)
             )
         }
 
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
 
-            canvas.drawText(key.char.toString(),
-              width / 2F, paddingTop - charPaint.ascent(), charPaint)
+            canvas.drawText(
+                key.char.toString(),
+                width / 2F, paddingTop - charPaint.ascent(), charPaint
+            )
 
             if (key.subText.isNotBlank()) {
-                canvas.drawText(key.subText, width / 2F,
-                  height - paddingBottom - subTextPaint.descent(), subTextPaint)
+                canvas.drawText(
+                    key.subText, width / 2F,
+                    height - paddingBottom - subTextPaint.descent(), subTextPaint
+                )
             }
         }
     }
@@ -336,7 +333,8 @@ class PinpadView @JvmOverloads constructor(
         }
 
         companion object {
-            @JvmField val NULL = Key('\u0000', "")
+            @JvmField
+            val NULL = Key('\u0000', "")
         }
     }
 
@@ -354,7 +352,7 @@ class PinpadView @JvmOverloads constructor(
 
     companion object {
         private const val KEY_DEL = '\u232B'
-        private const val KEY_HELP = '\u2753'
+        private const val KEY_HELP = '\u24D8'
         private const val NUM_COLS = 3
         private const val NUM_ROWS = 4
         private const val DURATION_ANIMATION = 300L
